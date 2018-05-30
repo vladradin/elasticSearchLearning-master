@@ -8,6 +8,23 @@ namespace ElasticSearchApp.Common
 {
 	public static class EsExtensions
 	{
+		const string REMOVE_NUMBERS_NORMALIZER_NAME = "removeNumbersNormalizer";
+		const string REMOVE_NUMBERS_CHAR_FILTER_NAME = "removeNumberCharFilter";
+
+		public static AnalysisDescriptor CreateRemoveNumbersNormalizer(this AnalysisDescriptor analysisDescriptor)
+		{
+			return analysisDescriptor.Normalizers(norm => norm
+								.Custom(REMOVE_NUMBERS_NORMALIZER_NAME, cstNorm => cstNorm
+									 .CharFilters(REMOVE_NUMBERS_CHAR_FILTER_NAME)));
+		}
+
+		public static AnalysisDescriptor CreateRemoveNumbersCharFilters(this AnalysisDescriptor analysisDescriptor)
+		{
+			return analysisDescriptor.CharFilters(cFilter => cFilter
+						   .Mapping(REMOVE_NUMBERS_CHAR_FILTER_NAME, mpf => mpf
+								.Mappings("1=>", "2=>", "3=>", "4=>", "5=>", "6=>", "7=>", "8=>", "9=>")));
+		}
+
 		public static PropertiesDescriptor<T> CreateTextFieldWithKeyword<T>(this PropertiesDescriptor<T> textDescriptor, Expression<Func<T, object>> fieldPath)
 			where T : class
 		{
@@ -16,7 +33,7 @@ namespace ElasticSearchApp.Common
 									 .Fields(f => f
 										 .Keyword(pk => pk
 											 .Name("keyword")
-											 .Normalizer("removeNumbers")
+											 .Normalizer(REMOVE_NUMBERS_NORMALIZER_NAME)
 											 .IgnoreAbove(256))));
 		}
 
@@ -28,7 +45,7 @@ namespace ElasticSearchApp.Common
 									 .Fields(f => f
 										 .Keyword(pk => pk
 											 .Name("keyword")
-											 .Normalizer("removeNumbers")
+											 .Normalizer(REMOVE_NUMBERS_NORMALIZER_NAME)
 											 .IgnoreAbove(256))));
 		}
 
@@ -40,7 +57,7 @@ namespace ElasticSearchApp.Common
 									 .Fields(f => f
 										 .Keyword(pk => pk
 											 .Name("keyword")
-											 .Normalizer("removeNumbers")
+											 .Normalizer(REMOVE_NUMBERS_NORMALIZER_NAME)
 											 .IgnoreAbove(256))));
 		}
 

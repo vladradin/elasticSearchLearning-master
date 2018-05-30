@@ -9,22 +9,7 @@ namespace ElasticSearchApp.Accounts
 	public static class AccountMappingExtensions
 	{
 		public const string ACCOUNTS_INDEX_NAME = "accounts";
-		const string REMOVE_NUMBERS_NORMALIZER_NAME = "removeNumbersNormalizer";
-		const string REMOVE_NUMBERS_CHAR_FILTER_NAME = "removeNumberCharFilter";
 
-		public static AnalysisDescriptor CreateRemoveNumbersNormalizer(this AnalysisDescriptor analysisDescriptor)
-		{
-			return analysisDescriptor.Normalizers(norm => norm
-								.Custom(REMOVE_NUMBERS_NORMALIZER_NAME, cstNorm => cstNorm
-									 .CharFilters("removeNumbers")));
-		}
-
-		public static AnalysisDescriptor CreateRemoveNumbersCharFilters(this AnalysisDescriptor analysisDescriptor)
-		{
-			return analysisDescriptor.CharFilters(cFilter => cFilter
-						   .Mapping(REMOVE_NUMBERS_CHAR_FILTER_NAME, mpf => mpf
-								.Mappings("1=>", "2=>", "3=>", "4=>", "5=>", "6=>", "7=>", "8=>", "9=>")));
-		}
 	}
 
 	class AccountMapping : IndexBuilder<Account>

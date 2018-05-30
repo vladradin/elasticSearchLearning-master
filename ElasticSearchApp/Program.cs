@@ -122,13 +122,12 @@ namespace ElasticSearchApp
 
 			IndexBuilder<Account> indexConfig = new AccountMapping();
 
+			client.DeleteIndex(indexConfig.IndexName);
 
 			var rsp = client.CreateIndex(indexConfig.IndexName, i => i
                               .Settings(indexConfig.ConfigureIndexSettings)
                               .Mappings(mp => mp
                                 .Map<Account>(indexConfig.MapAccount)));
-
-
 
 
 			var rspa = rsp.IsValid;
